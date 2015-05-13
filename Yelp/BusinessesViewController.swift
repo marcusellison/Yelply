@@ -8,33 +8,43 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var businesses: [Business]!
+    @IBOutlet weak var tableView: UITableView!
+    
+    // instantiating the class prevents a nil value error from occuring in the tableview count section
+    var businesses: [Business]! = [Business]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-        //            self.businesses = businesses
-        //
-        //            for business in businesses {
-        //                println(business.name!)
-        //                println(business.address!)
-        //            }
-        //        })
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
-            
-            for business in businesses {
-                println(business.name!)
-                println(business.address!)
-            }
-        }
+                Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
+                    self.businesses = businesses
         
+//                    for business in businesses {
+//                        println(business.name!)
+//                        println(business.address!)
+//                    }
+                    
+                    // reload the tableView data once api call finishes
+                    self.tableView.reloadData()
+                    
+                })
+//        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+//            self.businesses = businesses
+//            
+//            self.tableView.reloadData()
+//            
+//            for business in businesses {
+//                println(business.name!)
+//                println(business.address!)
+//            }
+//        }
         
-        
-        
+        // cues the table view to use autolayout to determine row height
+//        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.dataSource = self
+        tableView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,15 +52,38 @@ class BusinessesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if businesses != nil {
+            return businesses.count
+        } else {
+            return 0
+        }
+        
+    }
+    
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
+        
+//        cell.setBusiness(businesses![indexPath.row])
+        cell.business = businesses![indexPath.row]
+        
+        return cell
+        
+    }
+    
+    
+
+
 
 }
