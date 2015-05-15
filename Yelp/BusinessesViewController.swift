@@ -20,11 +20,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 
                 Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
                     self.businesses = businesses
-        
-//                    for business in businesses {
-//                        println(business.name!)
-//                        println(business.address!)
-//                    }
                     
                     // reload the tableView data once api call finishes
                     self.tableView.reloadData()
@@ -42,7 +37,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //        }
         
         // cues the table view to use autolayout to determine row height
-//        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -75,7 +71,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
         
-//        cell.setBusiness(businesses![indexPath.row])
         cell.business = businesses![indexPath.row]
         
         return cell
