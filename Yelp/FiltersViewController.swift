@@ -43,7 +43,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBAction func onSearchButton(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
         
-        var filters = [String: anyObject]()
+        var filters = [String: AnyObject]()
         
         var selectedCategories = [String]()
         for (row,isSelected) in switchStates {
@@ -72,11 +72,11 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as? SwitchCell
         
-//      cell!.switchLabel.text = categories[indexPath.row]["name"]
+        cell!.switchLabel.text = categories[indexPath.row]["name"]
         
-        cell.delegate = self
+        cell!.delegate = self
         
-        cell.onSwitch.on = switchCell[indexPath.row] ?? false
+        cell!.onSwitch.on = switchStates[indexPath.row] ?? false
         
         func switchCell(switchCell: SwitchCell,
             didChangeValue value: Bool) {
@@ -86,7 +86,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 //            println("filters view controller got the switch event")
         }
         
-        return cell
+        return cell!
     }
 
 }

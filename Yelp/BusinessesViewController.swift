@@ -8,16 +8,37 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, FiltersViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+//    @IBOutlet weak var businessSearchBar: UISearchBar!
     
     
     // instantiating the class prevents a nil value error from occuring in the tableview count section
     var businesses: [Business]! = [Business]()
+    
+    
+    // search bar
+    var businessSearchBar: UISearchBar?
+    var searchActive : Bool = false
+    var filtered: [Business] = [Business]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // cues the table view to use autolayout to determine row height
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        //search bar
+        self.businessSearchBar = UISearchBar(frame :CGRectMake(0, 0, 320, 64))
+        businessSearchBar!.center = CGPointMake(160, 284)
+        self.businessSearchBar!.delegate = self
+        navigationItem.titleView = businessSearchBar
+        
 
                 Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
                     self.businesses = businesses
@@ -37,11 +58,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //            }
 //        }
         
-        // cues the table view to use autolayout to determine row height
-        tableView.estimatedRowHeight = 100
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.dataSource = self
-        tableView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,7 +69,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if businesses != nil {
-            return businesses.count
+            
+            // if searchActive true return filtered.count otherwise return business.count
+            return searchActive ? filtered.count : businesses.count
+            
         } else {
             return 0
         }
@@ -64,7 +83,13 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         let cell = tableView.dequeueReusableCellWithIdentifier("BusinessCell", forIndexPath: indexPath) as! BusinessCell
         
-        cell.business = businesses![indexPath.row]
+        if searchActive {
+            cell.business = filtered[indexPath.row]
+        } else {
+            cell.business = businesses![indexPath.row];
+        }
+        
+//        cell.business = businesses![indexPath.row]
         
         return cell
         
@@ -87,6 +112,44 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             self.businesses = businesses
             self.tableView.reloadData()
         }
+    }
+    
+    // search bar functions
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchActive = true;
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBar(businessSearchBar: UISearchBar, textDidChange searchText: String) {
+        
+        println("searchbar")
+        
+        filtered = businesses!.filter({ (text) -> Bool in
+            let tmp: AnyObject? = text.name
+            let range = tmp!.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return range.location != NSNotFound
+        })
+        
+        println(filtered.count)
+        
+        if filtered.count == 0 {
+            searchActive = false;
+        } else {
+            searchActive = true;
+        }
+        
+        self.tableView.reloadData()
     }
     
     
