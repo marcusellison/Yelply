@@ -8,15 +8,23 @@
 
 import UIKit
 
-class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+@objc protocol FiltersViewControllerDelegate {
+    optional func filtersViewController(filtersViewController:FiltersViewController, didUpdateFilters: [String:AnyObject])
+}
+
+class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var onCancelButton: UIBarButtonItem! // is this necessary (not in video)
+    
+    weak var delegate: FiltersViewControllerDelegate?
     
     var categories: [[String:String]]!
+    var switchStates = [Int: Bool]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        categories = yelpCategories()
+//      categories = yelpCategories()
         tableView.delegate = self
         tableView.dataSource = self
 
@@ -34,28 +42,51 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 
     @IBAction func onSearchButton(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
+        
+        var filters = [String: anyObject]()
+        
+        var selectedCategories = [String]()
+        for (row,isSelected) in switchStates {
+            if isSelected {
+                selectedCategories.append(categories[row]["code"]!)
+            }
+            
+        }
+        
+        if selectedCategories.count > 0 {
+            filters["categories"] = selectedCategories
+        }
+        
+        delegate?.filtersViewController?(self, didUpdateFilters: filters)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        
+        if categories != nil {
+            return categories.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indePath) as? SwitchCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as? SwitchCell
         
-        cell.switchLabel.text = categories[indexPath.row]["name"]
+//      cell!.switchLabel.text = categories[indexPath.row]["name"]
+        
+        cell.delegate = self
+        
+        cell.onSwitch.on = switchCell[indexPath.row] ?? false
+        
+        func switchCell(switchCell: SwitchCell,
+            didChangeValue value: Bool) {
+            let indexPath = tableView.indexPathForCell(switchCell)!
+                
+            switchStates[indexPath.row] = value
+//            println("filters view controller got the switch event")
+        }
         
         return cell
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

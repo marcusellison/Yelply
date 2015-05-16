@@ -215,7 +215,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="onCancelButton" destination="6xD-qp-pOz" id="ijh-WW-c9I"/>
+                        <outlet property="onCancelButton" destination="6xD-qp-pOz" id="MFR-4M-hY5"/>
                         <outlet property="tableView" destination="pK3-l9-BIo" id="2Qt-oe-Sff"/>
                     </connections>
                 </viewController>
