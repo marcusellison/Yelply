@@ -39,7 +39,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     let radiusCellKey = 1
     let sortCellKey = 2
     
-    let dealsText = "Offering a Deal"
+    let dealsText = "Want Deals?"
     
     var categories: [[String:String]]!
     var switchStates = [NSIndexPath: Bool]()
@@ -102,12 +102,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             return cell
             
         case sortCellKey:
-//            let cell = tableView.dequeueReusableCellWithIdentifier(cellTypes["sort"]!, forIndexPath: indexPath) as! SegmentedCell
-//            
-//            cell.segmentedValueLabel.text = sortCategories[indexPath.row]
-//            
-//            cell.delegate = self
-//            return cell
             
             let cell = tableView.dequeueReusableCellWithIdentifier(cellTypes["radius"]!, forIndexPath: indexPath) as! RadiusCell
             
@@ -136,7 +130,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 //            cell.onSwitch.hidden = true
             cell.onSwitch.on = switchStates[indexPath] ?? false
             
-            
+            //Almost implemented!
             if cell.onSwitch!.on {
 //                cell.accessoryView = UIImageView(image: UIImage(named: "SortSelected"))
                 cell.accessoryType = .Checkmark
@@ -211,7 +205,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // radiusCelllDelegate
     func radiusCell(radiusCell: RadiusCell, valueUpdated: Bool) {
-        println("radius cell!")
         matchType = tableView.indexPathForCell(radiusCell)!.row
     }
     
