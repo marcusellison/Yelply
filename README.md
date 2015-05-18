@@ -3,7 +3,7 @@ Swift (Xcode 6.3.1) Yelp Client
 
 Let's build a yelp client using the greatness of Swift.
 
-Time spent: N/A
+Time spent: 23 YaRRR! hours
 
 Required
 
@@ -19,7 +19,7 @@ Filter page. Unfortunately, not all the filters are supported in the Yelp API.
 - [X] Display some of the available Yelp categories (choose any 3-4 that you want).
 
 notes:
-- I got caught up in optimizing code
+- I got caught up in optimizing smaller pieces code
 
 Optional
 
