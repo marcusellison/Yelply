@@ -12,11 +12,14 @@ Search results page
 - [x] Custom cells should have the proper Auto Layout constraints
 - [x] Search bar should be in the navigation bar (doesn't have to expand to show location like the real Yelp app does).
 Filter page. Unfortunately, not all the filters are supported in the Yelp API.
-- [ ] The filters you should actually have are: category, sort (best match, distance, highest rated), radius (meters), deals (on/off).
+- [x] The filters you should actually have are: category, sort (best match, distance, highest rated), radius (meters), deals (on/off).
 - [X] The filters table should be organized into sections as in the mock.
-- [ ] You can use the default UISwitch for on/off states. Optional: implement a custom switch
+- [x] You can use the default UISwitch for on/off states. Optional: implement a custom switch
 - [X] Clicking on the "Search" button should dismiss the filters page and trigger the search w/ the new filter settings.
 - [X] Display some of the available Yelp categories (choose any 3-4 that you want).
+
+notes:
+- I got caught up in optimizing code
 
 Optional
 
@@ -30,7 +33,7 @@ Filter page
 
 Walkthrough of user stories:
 
-![Alt text](/gif/rotten-tomatoes-gif.gif?raw=true "Optional Title")
+![Alt text](/gif/yelp-gif.gif?raw=true "Optional Title")
 
 Installation
 
