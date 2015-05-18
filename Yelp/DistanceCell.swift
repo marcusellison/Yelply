@@ -1,38 +1,39 @@
 //
-//  SwitchCell.swift
+//  DistanceCell.swift
 //  Yelp
 //
-//  Created by Marcus J. Ellison on 5/14/15.
+//  Created by Marcus J. Ellison on 5/17/15.
 //  Copyright (c) 2015 Marcus J. Ellison. All rights reserved.
 //
 
 import UIKit
 
-@objc protocol SwitchCellDelegate {
-   optional func  switchCell( switchCell: SwitchCell, didChangeValue value: Bool)
+@objc protocol RadiusCellDelegate {
+    optional func radiusCell(radiusCell: RadiusCell, valueUpdated: Bool)
 }
 
-class SwitchCell: UITableViewCell {
-    @IBOutlet weak var switchLabel: UILabel!
+class RadiusCell: UITableViewCell {
+    
     @IBOutlet weak var onSwitch: UISwitch!
-
-    weak var delegate: SwitchCellDelegate?
+    
+    @IBOutlet weak var radiusLabel: UILabel!
+    
+    weak var delegate: RadiusCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
         onSwitch.addTarget(self, action: "switchValueChanged", forControlEvents: UIControlEvents.ValueChanged)
-
+    }
+    
+    func switchValueChanged() {
+        println("change")
+        delegate?.radiusCell?(self, valueUpdated: onSwitch.on)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-
-    func switchValueChanged() {
-        delegate?.switchCell?(self, didChangeValue: onSwitch.on)
     }
 
 }

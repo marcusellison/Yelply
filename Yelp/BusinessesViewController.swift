@@ -13,10 +13,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var tableView: UITableView!
 //    @IBOutlet weak var businessSearchBar: UISearchBar!
     
-    
     // instantiating the class prevents a nil value error from occuring in the tableview count section
     var businesses: [Business]! = [Business]()
-    
     
     // search bar
     var businessSearchBar: UISearchBar?
@@ -25,7 +23,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // cues the table view to use autolayout to determine row height
         tableView.estimatedRowHeight = 100
@@ -39,7 +36,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         self.businessSearchBar!.delegate = self
         navigationItem.titleView = businessSearchBar
         
-
                 Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
                     self.businesses = businesses
                     
@@ -57,7 +53,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
 //                println(business.address!)
 //            }
 //        }
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,18 +60,15 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         // Dispose of any resources that can be recreated.
     }
     
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if businesses != nil {
-            
             // if searchActive true return filtered.count otherwise return business.count
             return searchActive ? filtered.count : businesses.count
             
         } else {
             return 0
         }
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -89,7 +81,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             cell.business = businesses![indexPath.row];
         }
         
-//        cell.business = businesses![indexPath.row]
+//      cell.business = businesses![indexPath.row]
         
         return cell
         
@@ -133,15 +125,11 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func searchBar(businessSearchBar: UISearchBar, textDidChange searchText: String) {
         
-        println("searchbar")
-        
         filtered = businesses!.filter({ (text) -> Bool in
             let tmp: AnyObject? = text.name
             let range = tmp!.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
             return range.location != NSNotFound
         })
-        
-        println(filtered.count)
         
         if filtered.count == 0 {
             searchActive = false;
