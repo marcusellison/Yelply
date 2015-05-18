@@ -40,8 +40,7 @@ Installation
 - Requires Xcode 6.3 beta
 - Retrieve the Yelp API tokens from http://developer.yelp.com
 - Create a folder called Config in the main folder (the one that contains the Podfile)
-- In the config folder, create YelpLightConfig.xcconfig
-- Inside YelpLightConfig.xcconfig, change the following strings:
+- Inside YelpClient.swift, change the following strings:
   - yelpConsumerKey = your-consumer-token
   - yelpConsumerSecret = your-consumer-secret
   - yelpToken = your-token
